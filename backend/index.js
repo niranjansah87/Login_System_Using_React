@@ -12,8 +12,8 @@ app.use(corsMiddleware);
 
 // Other middleware and routes go here
 
-// app.use('/login', require('./routes/auth'))
-// app.use('/signup', require('./routes/auth'))
+//Available Routes
+app.use('/api/auth',require('./routes/auth'));
 
 
 app.get('/', (req, res) => {
