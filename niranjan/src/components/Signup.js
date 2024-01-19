@@ -5,6 +5,7 @@ export default function Signup() {
     
   return (
     <>
+    <div className="signup">
     <form action="#" method="POST">
                  
     <div class="box">
@@ -45,7 +46,7 @@ export default function Signup() {
             
 
         
-    
+              </div>
     </>
   )
 }
