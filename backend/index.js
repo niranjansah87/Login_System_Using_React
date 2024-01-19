@@ -11,9 +11,9 @@ const port = 5000;
 app.use(corsMiddleware);
 
 // Other middleware and routes go here
-app.use('/login',require('./routes/auth'));
-app.use('/signup',require('./routes/auth'));
 
+// app.use('/login', require('./routes/auth'))
+// app.use('/signup', require('./routes/auth'))
 
 
 app.get('/', (req, res) => {
