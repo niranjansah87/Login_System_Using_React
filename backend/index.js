@@ -1,29 +1,22 @@
 const connectToMongoose = require('./db');
 const express = require('express');
-const cors = require('cors'); // Import cors
-
-const corsMiddleware = require('./middleware/corsMiddleware'); // Import your custom corsMiddleware
-
+const cors = require('cors');
 const app = express();
 const port = 5000;
 
-// Use cors middleware
-app.use(corsMiddleware);
+// Connect to MongoDB
+connectToMongoose();
+app.use(express.json());
+// Apply CORS middleware
+app.use(cors());
 
-// Other middleware and routes go here
+// Parse JSON requests
+app.use(express.json());
 
-//Available Routes
-app.use('/api/auth',require('./routes/auth'));
+// Available routes
+app.use('/api/auth', require('./routes/auth'));
 
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.listen(port, (error) => {
-  if (!error) {
-    console.log(`Server is running at port ${port}`);
-  } else {
-    console.log(`Error occurred while listening on port ${port}`, error);
-  }
+// Start the server
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
 });
