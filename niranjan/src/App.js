@@ -5,6 +5,7 @@ import Home from './components/Home'; // Import the 'Home' component
 import About from './components/About'; // Import the 'About' component
 import Login from './components/Login'; // Import the 'Login' component
 import Signup from './components/Signup'; // Import the 'Signup' component
+import Index from './components/index'; // Import the 'Signup' component
 // Import the 'Navbar' component
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
 
         <Routes>
           <Route index element={<Home />} />
+          <Route path='/index' element={<Index />} />
           <Route exact path="/about" element={<About />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />

@@ -51,44 +51,42 @@ router.post('/signup',[
 });
 
 
-//Route 2: Authenticate a User using POST "api/auth/login". No login required
-
-router.post('/login',[
-    body('email','Enter a valid email').isLength({min:8}),
-    body('password','Enter a password').isLength({min:8})
-],async (req, res) => {
+// Route 2: Authenticate a User using POST "api/auth/login". No login required
+router.post('/login', [
+    body('email', 'Enter a valid email').isLength({ min: 8 }),
+    body('password', 'Enter a password').isLength({ min: 8 })
+  ], async (req, res) => {
     try {
-        const errors=validationResult(req);
-        if (!errors.isEmpty){
-            return res.status(400).json({errors:errors.array()});
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+  
+      const { email, password } = req.body;
+      let user = await User.findOne({ email });
+  
+      if (!user) {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
+  
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (!passwordMatch) {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
+  
+      const data = {
+        user: {
+          id: user.id,
         }
-
-
-        //Checking Email and Password is in database or not
-        const {email,password}=req.body;
-        let user=await User.findOne({email});
-        if(!user){
-            return res.status(400).json({error:"Please try to login with correct credentials"});
-        }
-        
-        const passwordCompare=await bcrypt.compare(password,user.password);
-        if(!passwordCompare){
-            return res.status(400).json({error:"Please try to login with correct credentials"});
-        }
-        const data={
-            user:{
-                id:user.id,
-            }
-        }
-        const authToken=jwt.sign(data,JWT_SECRET);
-        console.log(authToken);
-        res.json({authToken});
-        
+      };
+  
+      const authToken = jwt.sign(data, JWT_SECRET);
+      console.log(authToken);
+      res.json({ authToken });
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Some error occured");
-        
+      console.error(error);
+      res.status(500).send("Some error occurred");
     }
-
-});
-module.exports =router;
+  });
+  
+  module.exports = router;
