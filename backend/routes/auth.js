@@ -7,47 +7,49 @@ const {body,validationResult} =require('express-validator');
 const jwt= require('jsonwebtoken');
 const JWT_SECRET = 'Niranjan';
 
-//Route 1:Create a User using POST "api/auth/signup". No login required
-router.post('/signup',[
-    body('name','Enter a valid name').isLength({min:3}),
-    body('email','Enter a valid email').isLength({min:3}),
-    body('contact','Enter a valid contact').isLength({min:10}),
-    body('password','Enter a password').isLength({min:6})
-],async (req, res) => {
-    try {
-        const errors=validationResult(req);
-        if (!errors.isEmpty){
-            return res.status(400).json({errors:errors.array()});
-        }
-        let user=await User.findOne({email:req.body.email});
-        if(user){
-            return res.status(400).json({error:"Sorry a user with this email already exists"});
-        }
+//Route 1: Create a User using POST "api/auth/signup". No login required
+router.post('/signup', [
+  body('name', 'Enter a valid name').isLength({ min: 3 }),
+  body('email', 'Enter a valid email').isLength({ min: 3 }),
+  body('contact', 'Enter a valid contact').isLength({ min: 10 }),
+  body('password', 'Enter a password').isLength({ min: 6 })
+], async (req, res) => {
+  try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(400).json({ error: "Validation error. Please check your input." });
+      }
 
-        
-        const salt=await bcrypt.genSalt(10);
-        const secPass=await bcrypt.hash(req.body.password,salt);
-        //create a new user
-        user=await User.create({
-            name:req.body.name,
-            email:req.body.email,
-            contact:req.body.contact,
-            password:secPass,
-        });
-        const data={
-            user:{
-                id:user.id,
-            }
-        }
-        const authToken=jwt.sign(data,JWT_SECRET);
-        console.log(authToken);
-        res.json({authToken});
-        
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Some error occured");
-        
-    }
+      let user = await User.findOne({ email: req.body.email });
+      if (user) {
+          return res.status(400).json({ error: "Sorry, a user with this email already exists." });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const secPass = await bcrypt.hash(req.body.password, salt);
+
+      // Create a new user
+      user = await User.create({
+          name: req.body.name,
+          email: req.body.email,
+          contact: req.body.contact,
+          password: secPass,
+      });
+
+      const data = {
+          user: {
+              id: user.id,
+          }
+      };
+
+      const authToken = jwt.sign(data, JWT_SECRET);
+      console.log(authToken);
+      res.json({ authToken });
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).send("Some error occurred");
+  }
 });
 
 
