@@ -36,8 +36,15 @@ export default function Index() {
 
   return (
     <div>
-      {isLoggedIn ? <AuthNavbar /> : <UnAuthNavbar />}
-      <h1>My name is Niranjan Sah</h1>
-    </div>
+    {isLoggedIn ? (
+      <>
+        <AuthNavbar />
+        <h1>My name is Niranjan Sah</h1>
+      </>
+    ) : (
+      <UnAuthNavbar />
+    )}
+  </div>
   );
 }
+

@@ -4,46 +4,15 @@ import axios from "axios";
 import "../assets/login.css";
 
 const Login = ({ setLoginUser }) => {
-  // const [user, setUser] = useState({
-  //   email: '',
-  //   password: '',
-  // });
-  // const [error, setError] = useState('');
-  // const history = useNavigate();
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setError(''); // Clear error when user starts typing
-  //   setUser((prevUser) => ({
-  //     ...prevUser,
-  //     [name]: value,
-  //   }));
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post('http://localhost:5000/api/auth/login', user);
-  //     // alert(response.data.message);
-  //     setLoginUser(response.data.authToken);
-  //     history('/index');
-  //   } catch (error) {
-  //     console.error('Login error:', error);
-
-  //     if (error.response) {
-  //       setError(error.response.data.message || 'An error occurred');
-  //     } else {
-  //       setError('Network error. Please try again.');
-  //     }
-  //   }
-  // };
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
   const [error, setError] = useState("");
   const history = useNavigate();
-
+  // eslint-disable-next-line no-unused-vars
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setError("");
@@ -97,6 +66,30 @@ const Login = ({ setLoginUser }) => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    const fetchLoginStatus = async () => {
+      try {
+        const authToken = localStorage.getItem('authToken');
+        const response = await axios.get('http://localhost:5000/api/auth/checklogin', {
+          headers: {
+            'auth-token': authToken,
+          },
+        });
+  
+        // Update the isLoggedIn state based on the response
+        setIsLoggedIn(response.data.isLoggedIn);
+  
+        // If the user is logged in, the UI will be updated accordingly
+  
+      } catch (error) {
+        console.error('Fetch login status error:', error.message);
+      }
+    };
+  
+    fetchLoginStatus();
+  }, []); // Remove history from the dependency array to avoid unnecessary redirects
+  
 
   return (
     <>
