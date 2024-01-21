@@ -1,0 +1,133 @@
+/*profile.module.css*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap");
+@import url("https://fonts.cdnfonts.com/css/rostave-personal-use");
+:root {
+  --blue: #3498db;
+  --dark-blue: #2980b9;
+  --red: #e74c3c;
+  --dark-red: #c0392b;
+  --black: #333;
+  --white: #fff;
+  --light-bg: #eee;
+  --box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1{
+  text-align: center;
+}
+* {
+  font-family: fantasy;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--blue);
+}
+
+.btn,
+.delete_btn {
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px 30px;
+  color: var(--white);
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.btn {
+  background-color: var(--blue);
+}
+
+.btn:hover {
+  background-color: #e74c3c;
+}
+
+.delete_btn {
+  background-color: var(--red);
+}
+
+.delete_btn:hover {
+  background-color: #3498db;
+}
+
+.update_profile {
+  /* min-height: 110vh; */
+
+  margin-top: 2%;
+  border-color: #c0392b;
+  /* background-color: var(--light-bg); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.update_profile form {
+  padding: 20px;
+  height: 345px;
+  background-color: rgba(690, 400, 500, 0.1);
+  box-shadow: var(--box-shadow);
+  opacity: 1;
+  text-align: center;
+  width: 700px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.update_profile form .flex {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.update_profile form .flex .inputBox {
+  width: 49%;
+}
+
+.update_profile form .flex .inputBox span {
+  text-align: left;
+  display: block;
+  margin-top: 15px;
+  font-size: 17px;
+  color: var(--white);
+}
+
+.update_profile form .flex .inputBox .box {
+  width: 100%;
+  border-radius: 5px;
+  background-color: var(--light-bg);
+  padding: 12px 14px;
+  font-size: 17px;
+  color: var(--black);
+  margin-top: 10px;
+}
+
+@media (max-width: 650px) {
+  .update_profile form .flex {
+    flex-wrap: wrap;
+
+    gap: 0;
+  }
+  .update_profile form .flex .inputBox {
+    width: 100%;
+  }
+}
+
