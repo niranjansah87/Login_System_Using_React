@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
-
+const fetchuser = require('../middleware/fetchuser.js');
 const bcrypt = require('bcryptjs');
 const {body,validationResult} =require('express-validator');
 const jwt= require('jsonwebtoken');
@@ -91,4 +91,25 @@ router.post('/login', [
     }
   });
   
+
+
+  //Route 3:Log out a User using GET "api/auth/logout". Login required
+  router.get('/logout', (req, res) => {
+    res.clearCookie('authToken'); // Clear the authentication token cookie
+    res.json({ message: 'Logged out successfully' });
+  });
+
+
+
+  //Route 4:Fetch the user details using GET "api/auth/getuser". Login required
+  router.post('/getuser', fetchuser, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId).select("-password");
+        res.send(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
   module.exports = router;

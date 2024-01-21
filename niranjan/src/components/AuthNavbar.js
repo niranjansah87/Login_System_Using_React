@@ -10,7 +10,7 @@ export default function AuthNavbar() {
   const handleLogout = async () => {
     try {
       // Make a request to the backend logout endpoint using Axios
-      const response = await axios.get('http://localhost:5000/api/auth/logout', { withCredentials: true });
+      const response = await axios.get('/api/auth/logout', { withCredentials: true });
 
       if (response.status === 200) {
         // Clear any necessary state on the frontend

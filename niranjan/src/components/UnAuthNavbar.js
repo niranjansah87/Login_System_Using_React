@@ -1,7 +1,10 @@
-import React from 'react'
+// import React from 'react'
 import { Link } from 'react-router-dom'
 import '../assets/Navbar.css'
-export default function Navbar() {
+import React from 'react';
+export default function UnAuthNavbar() {
+  // const [isLoggedin, setIsLoggedin] = useState(false);
+
   return (
     <nav class="flex align-center">
   <p>Niranjan</p>
@@ -10,6 +13,7 @@ export default function Navbar() {
       <Link to="/home">Home</Link>
       {/* <a href="#">Store</a> */}
       <Link to="/about">About Us</Link>
+      
       <Link to="/signup" class="btn register">Register</Link>
       <Link to="/login" class="btn login">Log In</Link>
     </li>
