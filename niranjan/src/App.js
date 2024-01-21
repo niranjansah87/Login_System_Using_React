@@ -9,7 +9,7 @@ import Profile from './components/Profile';
 
 function App() {
   // Add state for login user
-  // eslint-disable-next-line
+  // eslint-disable-next-line no-unused-vars
   const [loginUser, setLoginUser] = useState(null);
 
   return (
@@ -17,7 +17,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
-          <Route path='/index' element={<Index />} />
+          {/* Pass setLoginUser as a prop to Index component */}
+          <Route path='/index' element={<Index setLoginUser={setLoginUser} />} />
           <Route exact path="/about" element={<About />} />
           {/* Pass setLoginUser as a prop to Login component */}
           <Route exact path="/login" element={<Login setLoginUser={setLoginUser} />} />

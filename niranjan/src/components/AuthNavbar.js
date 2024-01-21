@@ -3,14 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../assets/Navbar.css';
 
-export default function AuthNavbar() {
+const AuthNavbar = () => {
   const history = useNavigate();
 
   // Function to handle logout
   const handleLogout = async () => {
     try {
-      // Make a request to the backend logout endpoint using Axios
-      const response = await axios.get('/api/auth/logout', { withCredentials: true });
+      const response = await axios.post('http://localhost:5000/api/auth/logout', null, {
+  withCredentials: true,
+});
+
+      console.log('Logout response:', response);
 
       if (response.status === 200) {
         // Clear any necessary state on the frontend
@@ -19,9 +22,13 @@ export default function AuthNavbar() {
       } else {
         // Handle logout failure (e.g., display an error message)
         console.error('Logout failed:', response.statusText);
+        // Display an error message to the user
+        alert('Logout failed. Please try again.');
       }
     } catch (error) {
       console.error('Logout error:', error.message);
+      // Display an error message to the user
+      alert('Logout error. Please try again.');
     }
   };
 
@@ -45,4 +52,6 @@ export default function AuthNavbar() {
       </ul>
     </nav>
   );
-}
+};
+
+export default AuthNavbar;

@@ -1,19 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import '../assets/login.css';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../assets/login.css";
 
 const Login = ({ setLoginUser }) => {
+  // const [user, setUser] = useState({
+  //   email: '',
+  //   password: '',
+  // });
+  // const [error, setError] = useState('');
+  // const history = useNavigate();
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setError(''); // Clear error when user starts typing
+  //   setUser((prevUser) => ({
+  //     ...prevUser,
+  //     [name]: value,
+  //   }));
+  // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post('http://localhost:5000/api/auth/login', user);
+  //     // alert(response.data.message);
+  //     setLoginUser(response.data.authToken);
+  //     history('/index');
+  //   } catch (error) {
+  //     console.error('Login error:', error);
+
+  //     if (error.response) {
+  //       setError(error.response.data.message || 'An error occurred');
+  //     } else {
+  //       setError('Network error. Please try again.');
+  //     }
+  //   }
+  // };
   const [user, setUser] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const history = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setError(''); // Clear error when user starts typing
+    setError("");
     setUser((prevUser) => ({
       ...prevUser,
       [name]: value,
@@ -23,48 +56,44 @@ const Login = ({ setLoginUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', user);
-      // alert(response.data.message);
+      const response = await axios.post("http://localhost:5000/api/auth/login",user);
+      console.log("successful login");
+      localStorage.setItem("authToken", response.data.authToken);
       setLoginUser(response.data.authToken);
-      history('/index');
+      history("/index");
     } catch (error) {
-      console.error('Login error:', error);
-
-      if (error.response) {
-        setError(error.response.data.message || 'An error occurred');
-      } else {
-        setError('Network error. Please try again.');
-      }
+      console.error("Login error:", error);
+      setError(error.response?.data.message || "An error occurred");
     }
   };
 
   const toggleLoginForm = () => {
     var body = document.body;
-    body.classList.toggle('opened');
+    body.classList.toggle("opened");
   };
 
   const playVideo = () => {
-    var video = document.getElementById('myVideo');
+    var video = document.getElementById("myVideo");
     if (video) {
       video.muted = false;
       video.play().catch((error) => {
-        console.error('Autoplay was prevented:', error);
+        console.error("Autoplay was prevented:", error);
       });
     }
   };
 
   useEffect(() => {
-    var video = document.getElementById('myVideo');
+    var video = document.getElementById("myVideo");
     if (video) {
       video.play().catch((error) => {
-        console.error('Autoplay was prevented:', error);
+        console.error("Autoplay was prevented:", error);
       });
     }
 
-    var audio = document.getElementById('myAudio');
+    var audio = document.getElementById("myAudio");
     if (audio) {
       audio.play().catch((error) => {
-        console.error('Autoplay was prevented:', error);
+        console.error("Autoplay was prevented:", error);
       });
     }
   }, []);
@@ -134,7 +163,7 @@ const Login = ({ setLoginUser }) => {
         </form>
 
         <p>
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link className="sign-up" to="/signup">
             Sign up
           </Link>

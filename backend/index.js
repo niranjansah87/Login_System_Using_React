@@ -8,10 +8,7 @@ const port = 5000;
 connectToMongoose();
 app.use(express.json());
 // Apply CORS middleware
-// app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
-// Parse JSON requests
-app.use(express.json());
 
 // Available routes
 app.use('/api/auth', require('./routes/auth'));
@@ -20,6 +17,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });

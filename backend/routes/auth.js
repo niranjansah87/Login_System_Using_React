@@ -94,7 +94,7 @@ router.post('/login', [
 
 
   //Route 3:Log out a User using GET "api/auth/logout". Login required
-  router.get('/logout', (req, res) => {
+  router.post('/logout', (req, res) => {
     res.clearCookie('authToken'); // Clear the authentication token cookie
     res.json({ message: 'Logged out successfully' });
   });
@@ -115,13 +115,15 @@ router.post('/login', [
 
 //Route 5:Check whether user is logged in or not using POST "api/auth/checklogin". No login required
 
+// backend/routes/auth.js
 router.get('/checklogin', fetchuser, (req, res) => {
   try {
-    // If fetchuser middleware successfully extracts user information from the token, the user is considered logged in
+    console.log('Decoded Token:', req.user); // Verify if the decoded token is printed correctly
     res.status(200).json({ isLoggedIn: true, user: req.user, message: 'User logged in' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ isLoggedIn: false, error: 'Internal Server Error' });
   }
 });
+
   module.exports = router;
