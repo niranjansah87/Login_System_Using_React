@@ -1,48 +1,147 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../assets/Navbar.css';
+import '../assets/login.css';
 
-export default function AuthNavbar() {
+const Login = ({ setLoginUser }) => {
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
   const history = useNavigate();
 
-  // Function to handle logout
-  const handleLogout = async () => {
-    try {
-      // Make a request to the backend logout endpoint using Axios
-      const response = await axios.get('http://localhost:5000/api/auth/logout', { withCredentials: true });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setError(''); // Clear error when user starts typing
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+  };
 
-      if (response.status === 200) {
-        // Clear any necessary state on the frontend
-        // Redirect to the login page
-        history('/login');
-      } else {
-        // Handle logout failure (e.g., display an error message)
-        console.error('Logout failed:', response.statusText);
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', user);
+      // alert(response.data.message);
+      setLoginUser(response.data.authToken);
+      history('/index');
     } catch (error) {
-      console.error('Logout error:', error.message);
+      console.error('Login error:', error);
+
+      if (error.response) {
+        setError(error.response.data.message || 'An error occurred');
+      } else {
+        setError('Network error. Please try again.');
+      }
     }
   };
 
+  const toggleLoginForm = () => {
+    var body = document.body;
+    body.classList.toggle('opened');
+  };
+
+  const playVideo = () => {
+    var video = document.getElementById('myVideo');
+    if (video) {
+      video.muted = false;
+      video.play().catch((error) => {
+        console.error('Autoplay was prevented:', error);
+      });
+    }
+  };
+
+  useEffect(() => {
+    var video = document.getElementById('myVideo');
+    if (video) {
+      video.play().catch((error) => {
+        console.error('Autoplay was prevented:', error);
+      });
+    }
+
+    var audio = document.getElementById('myAudio');
+    if (audio) {
+      audio.play().catch((error) => {
+        console.error('Autoplay was prevented:', error);
+      });
+    }
+  }, []);
+
   return (
-    <nav className="flex align-center">
-      <p>Niranjan</p>
-      <ul>
-        <li className="big-screens">
-          <Link to="/home">Home</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/signup" className="btn register">
-            Profile
-          </Link>
-          <button onClick={handleLogout} className="btn login">
-            Log Out
+    <>
+      <video autoPlay id="myVideo" loop muted onClick={playVideo}>
+        <source src="/video/login.mp4" type="video/mp4" />
+      </video>
+
+      <audio autoPlay loop id="myAudio">
+        <source src="/sound/login.mp3" type="audio/mp3" />
+      </audio>
+
+      <header className="container">
+        <ul>
+          <li>
+            <Link onClick={toggleLoginForm} className="login">
+              Sign in
+            </Link>
+          </li>
+        </ul>
+      </header>
+
+      <main className="login-form">
+        <div onClick={toggleLoginForm} className="close-login-form">
+          &times;
+        </div>
+        <form onSubmit={handleSubmit}>
+          <h1>Login</h1>
+
+          <div className="input-group">
+            <input
+              type="text"
+              name="email"
+              value={user.email}
+              onChange={handleChange}
+              placeholder="Email"
+            />
+            <label>Email</label>
+          </div>
+
+          <div className="input-group">
+            <input
+              type="password"
+              value={user.password}
+              onChange={handleChange}
+              name="password"
+              placeholder="Password"
+            />
+            <label>Password</label>
+          </div>
+
+          <div className="remember">
+            <div className="checkbox-group">
+              <input type="checkbox" />
+              <label>Remember me</label>
+            </div>
+            <Link to="/">Forgot password?</Link>
+          </div>
+
+          <button type="submit" className="login-button">
+            Login
           </button>
-        </li>
-        <li className="small-screens">
-          <i className="fa-solid fa-bars"></i>
-        </li>
-      </ul>
-    </nav>
+
+          {error && <div className="error-message">{error}</div>}
+        </form>
+
+        <p>
+          Don't have an account?{' '}
+          <Link className="sign-up" to="/signup">
+            Sign up
+          </Link>
+        </p>
+      </main>
+    </>
   );
-}
+};
+
+export default Login;

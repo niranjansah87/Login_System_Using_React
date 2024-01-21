@@ -112,4 +112,16 @@ router.post('/login', [
         res.status(500).send("Internal Server Error");
     }
 });
+
+//Route 5:Check whether user is logged in or not using POST "api/auth/checklogin". No login required
+
+router.get('/checklogin', fetchuser, (req, res) => {
+  try {
+    // If fetchuser middleware successfully extracts user information from the token, the user is considered logged in
+    res.status(200).json({ isLoggedIn: true, user: req.user, message: 'User logged in' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ isLoggedIn: false, error: 'Internal Server Error' });
+  }
+});
   module.exports = router;

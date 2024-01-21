@@ -32,7 +32,7 @@ export default function AuthNavbar() {
         <li className="big-screens">
           <Link to="/home">Home</Link>
           <Link to="/about">About Us</Link>
-          <Link to="/signup" className="btn register">
+          <Link to="/profile" className="btn register">
             Profile
           </Link>
           <button onClick={handleLogout} className="btn login">

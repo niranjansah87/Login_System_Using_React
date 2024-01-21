@@ -1,26 +1,25 @@
-// import React from 'react'
-import { Link } from 'react-router-dom'
-import '../assets/Navbar.css'
 import React from 'react';
-export default function UnAuthNavbar() {
-  // const [isLoggedin, setIsLoggedin] = useState(false);
+import { Link } from 'react-router-dom';
 
+export default function UnAuthNavbar() {
   return (
-    <nav class="flex align-center">
-  <p>Niranjan</p>
-  <ul>
-    <li class="big-screens">
-      <Link to="/home">Home</Link>
-      {/* <a href="#">Store</a> */}
-      <Link to="/about">About Us</Link>
-      
-      <Link to="/signup" class="btn register">Register</Link>
-      <Link to="/login" class="btn login">Log In</Link>
-    </li>
-    <li class="small-screens">
-      <i class="fa-solid fa-bars"></i>
-    </li>
-  </ul>
-</nav>   
-  )
+    <nav className="flex align-center">
+      <p>Niranjan</p>
+      <ul>
+        <li className="big-screens">
+          <Link to="/home">Home</Link>
+          <Link to="/about">About Us</Link>
+          <Link to="/signup" className="btn register">
+            Sign Up
+          </Link>
+          <Link to="/login" className="btn login">
+            Log In
+          </Link>
+        </li>
+        <li className="small-screens">
+          <i className="fa-solid fa-bars"></i>
+        </li>
+      </ul>
+    </nav>
+  );
 }
