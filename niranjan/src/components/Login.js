@@ -29,6 +29,9 @@ const Login = ({ setLoginUser }) => {
       console.log("successful login");
       localStorage.setItem("authToken", response.data.authToken);
       setLoginUser(response.data.authToken);
+      if (typeof setLoginUser === 'function') {
+        setLoginUser(response.data.authToken);
+      }
       history("/index");
     } catch (error) {
       console.error("Login error:", error);

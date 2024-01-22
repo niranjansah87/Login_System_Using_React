@@ -15,16 +15,7 @@
 h1{
   text-align: center;
 }
-* {
-  font-family: fantasy;
-  margin: 0;
-  padding: 0;
-  text-transform: uppercase;
-  box-sizing: border-box;
-  outline: none;
-  border: none;
-  text-decoration: none;
-}
+
 
 *::-webkit-scrollbar {
   width: 10px;
