@@ -13,7 +13,7 @@ const AuthNavbar = () => {
   withCredentials: true,
 });
 
-      console.log('Logout response:', response);
+      // console.log('Logout response:', response);
 
       if (response.status === 200) {
         // Clear any necessary state on the frontend
