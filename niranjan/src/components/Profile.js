@@ -67,9 +67,6 @@
 // //   );
 // // }
 
-
-
-
 // // import React, { useState, useEffect } from 'react';
 // import React from 'react';
 // import { Link } from 'react-router-dom';
@@ -112,76 +109,89 @@
 //   );
 // }
 
-
-
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styles from '../assets/profile.module.css';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import styles from "../assets/profile.module.css";
+import { useEffect } from "react";
 
 export default function Profile() {
   const myStyle = {
     background: `url(${process.env.PUBLIC_URL}/login.jpg)`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    height: '120vh',
-    marginTop: '-32px',
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    height: "120vh",
+    marginTop: "-32px",
   };
 
-
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    contact: "",
+  });
   useEffect(() => {
-        const fetchUserData = async () => {
-          try {
-            const response = await fetch('http://localhost:5000/api/auth/getuser', {
-              method: 'POST',
-              credentials: 'include', // Include credentials if using cookies for authentication
-            });
-    
-            if (response.ok) {
-              const user = await response.json();
-              setUserData(user);
-            } else {
-              console.error('Failed to fetch user data:', response.statusText);
-            }
-          } catch (error) {
-            console.error('Fetch user data error:', error.message);
-          }
-        };
-    
-        fetchUserData();
-      }, []); // Empty dependency array ensures the effect runs only once when the component mounts
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/getuser", {
+          method: "POST",
+          credentials: "include", // Include credentials if using cookies for authentication
+        });
 
+        if (response.ok) {
+          const user = await response.json();
+          setUserData(user);
+        } else {
+          console.error("Failed to fetch user data:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Fetch user data error:", error.message);
+      }
+    };
+
+    fetchUserData();
+  }, []); // Empty dependency array ensures the effect runs only once when the component mounts
 
   return (
     <>
-    
-    <div style={myStyle}>
-    
-      <div className={styles.update_profile}>
-        
-        <form style={{marginTop: '140px'}} action="#" encType="multipart/form-data">
-        <h1>Profile</h1>
-          <div className={styles.flex}>
-          
-            <div className={styles.inputBox}>
-              <span>Full name :</span>
-              <input type="text" name="update_name" value="#" className={styles.box} disabled />
-              <span>Email :</span>
-              <input type="email" name="update_email" value="#" className={styles.box} disabled />
+      <div style={myStyle}>
+        <div className={styles.update_profile}>
+          <form
+            style={{ marginTop: "140px" }}
+            action="#"
+            encType="multipart/form-data"
+          >
+            <h1>Profile</h1>
+            <div className={styles.flex}>
+              <div className={styles.inputBox}>
+                <span>Full name :</span>
+                <input
+                  type="text"
+                  name="update_name"
+                  value="#"
+                  className={styles.box}
+                  disabled
+                />
+                <span>Email :</span>
+                <input
+                  type="email"
+                  name="update_email"
+                  value="#"
+                  className={styles.box}
+                  disabled
+                />
+              </div>
+
+              <div className={styles.inputBox}>
+                <span>Contact Number</span>
+                <input className={styles.box} value="#" disabled />
+              </div>
             </div>
 
-            <div className={styles.inputBox}>
-              <span>Contact Number</span>
-              <input className={styles.box} value="#" disabled />
-            </div>
-          </div>
-
-          <Link to="/index" className={styles.delete_btn}>
-            Go back
-          </Link>
-        </form>
+            <Link to="/index" className={styles.delete_btn}>
+              Go back
+            </Link>
+          </form>
+        </div>
       </div>
-    </div>
     </>
   );
 }
