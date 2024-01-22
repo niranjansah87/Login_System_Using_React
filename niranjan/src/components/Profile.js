@@ -109,10 +109,10 @@
 //   );
 // }
 
-import React, { useEffect } from "react";
+import React, { useEffect ,useState} from "react";
 import { Link } from "react-router-dom";
 import styles from "../assets/profile.module.css";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 export default function Profile() {
   const myStyle = {
