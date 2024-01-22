@@ -117,7 +117,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import styles from '../assets/profile.module.css';
+import styles from '../assets/profile.module.css';
 
 export default function Profile() {
   const myStyle = {
@@ -127,6 +127,30 @@ export default function Profile() {
     height: '120vh',
     marginTop: '-32px',
   };
+
+
+  useEffect(() => {
+        const fetchUserData = async () => {
+          try {
+            const response = await fetch('http://localhost:5000/api/auth/getuser', {
+              method: 'POST',
+              credentials: 'include', // Include credentials if using cookies for authentication
+            });
+    
+            if (response.ok) {
+              const user = await response.json();
+              setUserData(user);
+            } else {
+              console.error('Failed to fetch user data:', response.statusText);
+            }
+          } catch (error) {
+            console.error('Fetch user data error:', error.message);
+          }
+        };
+    
+        fetchUserData();
+      }, []); // Empty dependency array ensures the effect runs only once when the component mounts
+
 
   return (
     <>
