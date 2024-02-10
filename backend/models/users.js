@@ -1,29 +1,62 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const Joi = require("joi");
 
-const UserSchema = new Schema({
-    name:{
-        type:String,
-        required:true,
-    },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
-    },
-    contact:{
-        type:Number,
-        required:true,
-    },
-    password:{
-        type:String,
-        required:true,
-    },
-    date:{
-        type:Date,
-        default:Date.now,
-    },
+const bcryptSalt = process.env.BCRYPT_SALT;
 
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      trim: true,
+      unique: true,
+      required: true,
+    },
+    contact: {
+      type: Number,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  const hash = await bcrypt.hash(this.password, Number(bcryptSalt));
+  this.password = hash;
+  next();
 });
-const Users=mongoose.model('Users',UserSchema);
-module.exports = Users;
+
+const User = mongoose.model("User", userSchema);
+
+const validate = (user) => {
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  });
+  return schema.validate(user);
+};
+
+module.exports = {
+  User: User,
+  validate: validate,
+};

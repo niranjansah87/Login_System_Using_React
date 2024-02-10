@@ -1,5 +1,6 @@
 const connectToMongoose = require('./db');
 const express = require('express');
+
 const cors = require('cors');
 const app = express();
 const port = 5000;
@@ -12,7 +13,8 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 // Available routes
 app.use('/api/auth', require('./routes/auth'));
-
+app.use("/api/users", require('./routes/users'));
+app.use("/api/password-reset",require('./routes/passwordReset'));
 // Start the server
 app.get('/', (req, res) => {
   res.send('Hello World!');
