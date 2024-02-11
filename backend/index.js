@@ -10,6 +10,7 @@ connectToMongoose();
 app.use(express.json());
 
 app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: false }));
 // Apply CORS middleware
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 

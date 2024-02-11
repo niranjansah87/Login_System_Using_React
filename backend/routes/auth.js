@@ -5,9 +5,12 @@ const fetchuser = require("../middleware/fetchuser.js");
 const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const { urlencoded } = require("body-parser");
 const JWT_SECRET = "Niranjan";
+var nodemailer = require('nodemailer');
 const app = express();
 app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: false }));
 //Route 1: Create a User using POST "api/auth/signup". No login required
 router.post(
   "/signup",
@@ -145,6 +148,28 @@ router.post("/forgotpassword", async (req, res) => {
       const token = jwt.sign({ email: user.email, id: user.id }, secret, { expiresIn: "30m", });
       const link = `http://localhost:5000/api/auth/resetpassword/${user.id}/${token}`;
       console.log(link);
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'sahn0075@gmail.com',
+          pass: 'mxbp cawe hctu pwzm'
+        }
+      });
+      
+      var mailOptions = {
+        from: 'sahn0075@gmail.com',
+        to: '2100090187csit@gmail.com',
+        subject: 'Sending Email using Node.js',
+        text:link
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
       res.send("Password reset link sent to your email account");
     }
   } catch (error) {
@@ -177,6 +202,7 @@ router.post('/resetpassword/:id/:token', async (req, res) => {
 
   const { id, token } = req.params;
   const password = req.body.password;
+  
   const user = await User.findOne({ _id: id });
   if (!user) {
     return res.status(400).json({ error: 'User with this email does not exist' });
