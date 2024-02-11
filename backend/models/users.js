@@ -31,32 +31,31 @@ const userSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  {
-    timestamps: true,
-  }
 );
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-  const hash = await bcrypt.hash(this.password, Number(bcryptSalt));
-  this.password = hash;
-  next();
-});
+// mongoose.model('User', userSchema);
+// 
+// userSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) {
+//     return next();
+//   }
+//   const hash = await bcrypt.hash(this.password, Number(bcryptSalt));
+//   this.password = hash;
+//   next();
+// });
 
+
+// const validate = (user) => {
+//   const schema = Joi.object({
+//     name: Joi.string().required(),
+//     email: Joi.string().email().required(),
+//     password: Joi.string().required(),
+//   });
+//   return schema.validate(user);
+// };
 const User = mongoose.model("User", userSchema);
-
-const validate = (user) => {
-  const schema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  });
-  return schema.validate(user);
-};
-
-module.exports = {
-  User: User,
-  validate: validate,
-};
+module.exports = User;
+// module.exports = {
+//   User: User,
+//   validate: validate,
+// };
