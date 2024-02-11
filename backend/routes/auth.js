@@ -6,7 +6,9 @@ const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "Niranjan";
-
+const app = express();
+app.set("view engine", "ejs");
+// app.use(express.static(path.join(__dirname, 'public')));
 //Route 1: Create a User using POST "api/auth/signup". No login required
 router.post(
   "/signup",
@@ -158,17 +160,114 @@ router.post("/forgotpassword", async (req, res) => {
 //Route 7:ResetPassword using GET "/api/auth/resetpassword/:id/:token". No login required
 
 router.get('/resetpassword/:id/:token', async (req, res) => {
+  const { id, token } = req.params;
+  console.log(req.params);
+  const user = await User.findOne({ _id: id });
+  if (!user) {
+    return res.status(400).json({ error: 'User with this email does not exist' });
+  }
+  const secret = JWT_SECRET + user.password;
   try {
-    const { id, token } = req.params; // Here you can check if the user exists, if the token is valid, and send a response to reset the password 
-    console.log(req.params);
-     res.status(200).json({ message: 'Password reset link sent to your email account' }); 
-    } catch (error) { 
-      console.error(error); 
-      res.status(500).json({ error: 'Some error occurred' }); 
-    } 
-  });
+    const payload = jwt.verify(token, secret);
+    // Redirect the user to a new page where they can reset their password
+    res.render('index', { email: payload.email });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ error: 'Token expired. Please try again' });
+  }
+});
 
-  
+//Route 8: Reset Password using POST "/api/auth/resetpassword/:id/:token". No login required
+// router.post('/resetpassword/:id/:token', async (req, res) => {
+
+//   const { id, token } = req.params;
+//   // console.log(req.params);
+//   const password = req.body.password;
+//   const user = await User.findOne({ _id: id });
+//   if (!user) {
+//     return res.status(400).json({ error: 'User with this email does not exist' });
+//   } else {
+//     const secret = JWT_SECRET + user.password;
+//     try {
+//       if (req.body.password === undefined) {
+//         return res.status(400).json({ error: 'Password cannot be empty' });
+//       }
+      
+//       const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
+      
+//       const salt = await bcrypt.genSalt(10);
+//       const hashedPassword = await bcrypt.hash(req.body.password, salt);
+//       await User.updateOne(
+//         {
+//            _id: id 
+//           }, { 
+//             $set: { 
+//               password: hashedPassword 
+//             } 
+//           });
+//           res.json({ message: 'Password reset successful' });
+      
+//     } catch (error) {
+//       console.error(error);
+//       res.status(401).json({ error: 'Token expired. Please try again' });
+      
+//     }
+
+//   }
+
+// }
+
+// );
 
 
-    module.exports = router;
+
+router.post("/resetpassword/:id/:token",[
+  body("password", "Enter the valid password").isLength({ min: 6 }),
+], async (req, res) => {
+  const { id, token } = req.params;
+  const user = await User.findOne({_id: id});
+  const password = req.body.password;
+  console.log("Received password:", password);
+
+  if (!user) {
+    return res.status(400).json({ error: "User with this email does not exist" });
+  } else if (!password) {
+    return res.status(400).json({ error: "Password cannot be empty" });
+  } else {
+    const secret = JWT_SECRET + user.password;
+    try {
+      const payload = jwt.verify(token, secret);
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+      await user.save();
+      res.send("Password has been updated");
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
+// router.post("/resetpassword/:id/:token", async (req, res) => {
+//   const { id, token } = req.params;
+//   const user = await User.findOne({ _id: id });
+//   const password= req.body.password;
+//   if (!user) {
+//     return res.status(400).json({ error: "User with this email does not exist" });
+//   }
+//   const secret = JWT_SECRET + user.password;
+//   try {
+//     const payload = jwt.verify(token, secret);
+//     if (req.body.password === undefined || req.body.password === "") {
+//       return res.status(400).json({ error: "Password cannot be empty" });
+//     }
+//     console.log(error)
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     user.password = hashedPassword;
+//     await user.save();
+//     res.send("Password has been updated");
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+module.exports = router;

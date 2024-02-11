@@ -8,6 +8,8 @@ const port = 5000;
 // Connect to MongoDB
 connectToMongoose();
 app.use(express.json());
+
+app.set("view engine", "ejs");
 // Apply CORS middleware
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
