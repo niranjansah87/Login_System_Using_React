@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const Joi = require("joi");
 
-const bcryptSalt = process.env.BCRYPT_SALT;
+
+
 
 const userSchema = new mongoose.Schema(
   {
@@ -26,6 +25,10 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     date: {
       type: Date,

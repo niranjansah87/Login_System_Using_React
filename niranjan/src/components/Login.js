@@ -32,7 +32,15 @@ const Login = ({ setLoginUser }) => {
       if (typeof setLoginUser === 'function') {
         setLoginUser(response.data.authToken);
       }
-      history("/index");
+     
+      if (response.data.role === 'admin') {
+        history('/admin'); // Redirect to admin panel
+      } else {
+        history('/index'); // Redirect to normal page
+      }
+      // history('/index');
+
+      
     } catch (error) {
       console.error("Login error:", error);
       setError(error.response?.data.message || "An error occurred");

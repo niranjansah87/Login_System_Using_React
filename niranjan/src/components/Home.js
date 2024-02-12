@@ -20,7 +20,7 @@ export default function Home() {
             'auth-token': authToken, // Corrected header name
           },
         });
-        console.log('Full response:', response);
+        // console.log('Full response:', response);
         if (response.ok) {
           setIsLoggedIn(true);
         } else {

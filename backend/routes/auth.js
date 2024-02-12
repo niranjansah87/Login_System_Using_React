@@ -64,6 +64,7 @@ router.post(
   }
 );
 
+
 // Route 2: Authenticate a User using POST "api/auth/login". No login required
 router.post(
   "/login",
@@ -96,8 +97,11 @@ router.post(
         },
       };
 
-      const authToken = jwt.sign(data, JWT_SECRET);
+      const authToken = jwt.sign(data, JWT_SECRET,{
+        expiresIn: '1h', // Token expiration time
+      });
       console.log(authToken);
+      // res.status(200).json({ authToken, role: user.role });
       res.json({ authToken });
     } catch (error) {
       console.error(error);
@@ -241,5 +245,9 @@ router.post('/resetpassword/:id/:token', async (req, res) => {
 }
 
 );
+
+
+
+
 
 module.exports = router;

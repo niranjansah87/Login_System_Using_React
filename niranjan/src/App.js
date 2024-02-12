@@ -8,6 +8,7 @@ import Index from './components/index';
 import Profile from './components/Profile';
 // import forgotPassword from './components/forgotPassword';
 import ForgotPassword from './components/ForgotPassword';
+import Admin from './components/admin'; // Import the 'Admin' component
 function App() {
   // Add state for login user
   // eslint-disable-next-line no-unused-vars
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/forget" element={<ForgotPassword />} />
+          <Route exact path="/admin" element={<Admin />} /> 
         </Routes>
       </BrowserRouter>
     </>
