@@ -1,4 +1,12 @@
 {
+  "scripts": {
+    "start": "concurrently \"cd backend && nodemon index.js\" \"cd niranjan && npm start\"",
+    "backend": "cd backend && nodemon index.js",
+    "frontend": "cd niranjan && npm start"
+  },
+
+
+
   "dependencies": {
     "axios": "^1.6.5",
     "bcryptjs": "^2.4.3",

@@ -131,7 +131,7 @@ router.get("/getuser", fetchuser, async (req, res) => {
 //Route 5:Check whether user is logged in or not using POST "api/auth/checklogin". No login required
 router.get("/checklogin", fetchuser, (req, res) => {
   try {
-    console.log("Decoded Token:", req.user); // Verify if the decoded token is printed correctly
+    // console.log("Decoded Token:", req.user); // Verify if the decoded token is printed correctly
     res
       .status(200)
       .json({ isLoggedIn: true, user: req.user, message: "User logged in" });

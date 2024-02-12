@@ -11,7 +11,7 @@ export default function Home() {
     const checkLoginStatus = async () => {
       try {
         const authToken = localStorage.getItem('authToken');
-        console.log('Stored Auth Token:', authToken);
+        // console.log('Stored Auth Token:', authToken);
 
         const response = await fetch('http://localhost:5000/api/auth/checklogin', {
           method: 'GET',
