@@ -25,7 +25,6 @@
     * Access the app in your browser (usually at `http://localhost:3000`).
 
 **Usage:**
-
 * **Login:** Enter credentials in the login form. Upon successful authentication, you'll be redirected to your profile page.
 * **Registration:** Create an account by providing your email and password. Your profile will be automatically created.
 * **Profile Management:** View and update your profile information in the dedicated profile view section.
